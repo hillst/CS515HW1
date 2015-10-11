@@ -1,0 +1,91 @@
+\documentclass{article}
+\usepackage[utf8]{inputenc}
+\setlength{\topmargin}{0.1in}
+\setlength{\oddsidemargin}{0in}
+\setlength{\evensidemargin}{0in}
+\setlength{\headheight}{0in}
+\setlength{\headsep}{0in}
+\setlength{\textheight}{9in}
+\setlength{\textwidth}{6.5in}
+\title{CS515 HW1}
+\author{Steve Hill}
+\date{October 2015}
+\usepackage{mathtools}
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
+
+\begin{document}
+
+\maketitle
+
+\begin{enumerate}
+\item 
+    \begin{enumerate}
+    \item 
+    Prove that the following algorithm actually sorts its input.
+    %Solution goes here%
+
+    \item
+    Would StoogeSort still sort correctly if we replaced $m = \ceil{2n/3e}$ with $m = \floor{2n/3c}$? Justify
+your answer.
+    %Solution goes here%
+ 
+    \item
+    State a recurrence (including the base case(s)) for the number of comparisons executed by
+StoogeSort.
+    %Solution goes here%
+
+    \item 
+    Solve the recurrence, and prove that your solution is correct. 
+    %Solution goes here%
+
+    \item
+    Prove that the number of swaps executed by StoogeSort is at most $n \choose 2$
+    %Solution goes here%
+
+    \end{enumerate}
+
+\item 
+An inversion in an array A[1..n] is a pair of indices $(i, j)$ such that $i < j$ and
+$A[i] > A[j]$. The number of inversions in an n-element array is between 0 (if the array is sorted)
+and $n \choose 2$ (if the array is sorted backward). Describe an algorithm to count the number of inversions
+in an n-element array in $O(n log n)$ time. Prove your algorithm is correct and analyze its running
+time
+
+%Solution goes here%
+
+\item 
+A shuffle of two strings X and Y is formed by interspersing the characters into a new string,
+keeping the characters of X and Y in the same order. For example, the string BANANAANANAS
+is a shuffle of the strings BANANA and ANANAS in several different ways.
+Similarly, the strings PRODGYRNAMAMMIINCG and DYPRONGARMAMMICING are both
+shuffles of DYNAMIC and PROGRAMMING:
+Given three strings $A[1..m], B[1..n]$, and $C[1..m + n]$, describe an algorithm to determine
+whether C is a shuffle of A and B. Prove your algorithm is correct and analyze its running time.
+%Solution goes here%
+
+\item 
+You are driving a bus along a highway, full of rowdy, hyper, thirsty students
+and a soda fountain machine. Each minute that a student is on your bus, that student drinks one
+ounce of soda. Your goal is to drop the students off quickly, so that the total amount of soda
+consumed by all students is as small as possible.
+
+You know how many students will get off of the bus at each exit. Your bus begins somewhere
+along the highway (probably not at either end) and move s at a constant speed of 3.14 miles per
+hour. You must drive the bus along the highway; however, you may drive forward to one exit then
+backward to an exit in the opposite direction, switching as often as you like. (You can stop the
+bus, drop off students, and turn around instantaneously.)
+
+Describe an efficient algorithm to drop the students off so that they drink as little soda as
+possible. Your input consists of the bus route (a list of the exits, together with the travel time
+between successive exits), the number of students you will drop off at each exit, and the current
+location of your bus (which you may assume is an exit). Prove your algorithm is correct and analyze
+its running time.
+
+%Solution goes here%
+
+\end{enumerate}
+
+\end{document}
+

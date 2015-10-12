@@ -1,5 +1,7 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+
 \setlength{\topmargin}{0.1in}
 \setlength{\oddsidemargin}{0in}
 \setlength{\evensidemargin}{0in}
@@ -62,8 +64,64 @@ is a shuffle of the strings BANANA and ANANAS in several different ways.
 Similarly, the strings PRODGYRNAMAMMIINCG and DYPRONGARMAMMICING are both
 shuffles of DYNAMIC and PROGRAMMING:
 Given three strings $A[1..m], B[1..n]$, and $C[1..m + n]$, describe an algorithm to determine
-whether C is a shuffle of A and B. Prove your algorithm is correct and analyze its running time.
+whether C is a shuffle of X and Y. Prove your algorithm is correct and analyze its running time.
 %Solution goes here%
+
+\[ isShuffle(C, X, Y) 
+    \begin{cases}
+    
+    True & \text{if } RecursiveHelper(C,X,Y) = length(C) \\
+    False, & \text{otherwise}
+    \end{cases}
+\]
+
+Consider the following recurrence relation:
+
+
+$\left RecursiveHelper(C, X, Y)$:\\
+\[
+    max  
+    \begin{cases}
+        RecursiveHelper(C[1:], X[1:], Y) + 1   & \text{if } C[0] = X[0])\\
+        RecursiveHelper(C[1:], X, Y[1:]) + 1    & \text{if } C[0] = Y[0]\\
+        1  & \text{if } C(i) = X(i) \text{ and } length(Y) = 0\\
+        1  & \text{if } C(i) = Y(i) \text{ and } length(X) = 0\\
+        0, & \text{otherwise}
+    \end{cases}
+\]
+The base case is defined as if C only contains one element and there is a match, return 1. If there is no match, return 0. This allows isShuffle to evaluate the length at the end of the recurrence as a measure of if C is a shuffle of X and Y.
+The recurrence is looking for a match from either the first position in X or Y to C, if there is a match, it removes the beginning of C and the corresponding character in X or Y and recurses. \\
+
+Proof of correctness:\\
+\\
+$Theorem:$ The above recurrence relation solves the shuffled string problem. \\
+$Proof:$ \\
+Let C be length 1, X be length 0, and Y be length 0. RecursiveHelper would return 0 by the last case and is Shuffle would return false. \\
+Let C be Length 1, X be length 1, and Y be length 0. If X is the same character as C, it will return 1, which is the length of the string, thus isShuffle returns true and the algorithm is correct. Similariy, if they are not equal, then the algorithm will reach the last case and return false\\
+Let k be the length of C. Let i,j be the length of X, Y respectively. \\
+Let $k > 1$ and length of X + length of $Y > 1$: \\
+\\
+For k = 2, it is easy to see that both X and Y must be one character and contained in C in order for isShuffle to return True, if there are two matches, case 3 and case 4 will respectively be met in both paths. Thus the max will be 2 and the algorithm will succeed and correctly return true. If there is no match, both RecursiveHelper calls will return 1 and isShuffle will return true. From here it is easy to see that for k+1, isShuffle will always return the correct answer.
+\\
+QED\\
+
+$Dynamic Programming:$\\
+\\
+isShuffleDP(C, X, Y)\\
+
+Construct a $n+1 x m+1$ table denoted T. At position 0x0, place a 0. \\
+Move through the table from left to right and suppose i and j represent the current indicies\\
+In each cell, enter the following: \\
+    \[
+     max
+    \begin{cases}
+        T(i - 1, j) + 1  & \text{if } C[i+j] = X[i])\\
+        T(i, j - 1) + 1  & \text{if } C[ni+j] = Y[j])\\
+        0, & \text{otherwise}
+    \end{cases}
+    \]
+This will populate every cell with the computations required the isShuffled recurrence relation in $O(mn)$ time using $O(mn)$ space. Either isShuffled may be run using the table as supplementary table, or you may use the cell at position n,m. If it is equal to the length of C, then the string is shuffled, otherwise C is not a shuffle of X and Y.
+
 
 \item 
 You are driving a bus along a highway, full of rowdy, hyper, thirsty students

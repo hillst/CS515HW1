@@ -1,6 +1,7 @@
 \documentclass{article}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
+\usepackage{mathtools}
 
 \setlength{\topmargin}{0.1in}
 \setlength{\oddsidemargin}{0in}
@@ -9,12 +10,13 @@
 \setlength{\headsep}{0in}
 \setlength{\textheight}{9in}
 \setlength{\textwidth}{6.5in}
+
+\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
+\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
+
 \title{CS515 HW1}
 \author{Steve Hill}
 \date{October 2015}
-\usepackage{mathtools}
-\DeclarePairedDelimiter{\ceil}{\lceil}{\rceil}
-\DeclarePairedDelimiter{\floor}{\lfloor}{\rfloor}
 
 
 \begin{document}
@@ -28,23 +30,61 @@
     Prove that the following algorithm actually sorts its input.
     %Solution goes here%
 
+  \begin{itemize}
+  \item Base case, $n=0,1$
+
+  Any list of length 0 or 1 is necessarily sorted. Therefore stoogesort can sort any list of length 0 or 1.
+
+  \item Base case, $n=2$
+
+  A list of length 2 is sorted if and only if its second element is smaller than its first element. 
+  When stoogesort is given a list of length 2, it swaps the positions of the two list elements if the second element is smaller than the first element. If the second element is larger than the first (i.e. the list is already sorted), stoogesort does nothing.
+  Therefore stoogesort can correctly sort any list of length 2.
+
+  \item Inductive step, $n>2$
+
+  For any list of size $n > 2$, stoogesort first sorts the first $\ceil{\frac{2n}{3}}$ elements of the list (via the inductive hypothesis), then sorts the last $n-\ceil{\frac{2n}{3}}$ elements of the list, and finally sorts the first $\ceil{\frac{2n}{3}}$ elements of the list again.
+
+  Consider a list in which the first $X=\floor{\frac{n}{3}}$ elements in the list are the largest $X$ elements in the list. The list is obviously not sorted initially. After the first intermediate call to stoogesort, we know via the IH that the first $\ceil{\frac{2n}{3}}$ elements of the list will be sorted, meaning that the $X$ largest elements will occupy indices $\ceil{\frac{2n}{3}}-\floor{\frac{n}{3}}$ through $\ceil{\frac{2n}{3}}$. 
+
+  The second intermediate call to stoogesort sorts elements in indices $n-\ceil{\frac{2n}{3}}$ through $n$ via IH. Therefore, the largest $X$ elements of the list will only be correctly sorted in the list after the second intermediate call to stoogesort if the overlap between the range of list elements the first and second calls to stoogesort cover is at least as large as $X$.
+
+  (Math worked out earlier goes here)
+
+  \end{itemize}
+
     \item
-    Would StoogeSort still sort correctly if we replaced $m = \ceil{2n/3e}$ with $m = \floor{2n/3c}$? Justify
+    Would StoogeSort still sort correctly if we replaced $m = \ceil{2n/3}$ with $m = \floor{2n/3}$? Justify
 your answer.
     %Solution goes here%
+
+    No, if you replace the ceiling with a floor it doesn't work. Follows from the math above.
+
  
     \item
     State a recurrence (including the base case(s)) for the number of comparisons executed by
 StoogeSort.
     %Solution goes here%
 
+Stoogesort only compares two list elements when the size of the list it's given to sort is 2. Otherwise, it calls stoogesort three times on lists of size $\ceil{\frac{2n}{3}}$. Therefore, we can state the recurrence relation of the number of list element comparisons as:
+
+\begin{align*}
+T(1) &= 0\\
+T(2) &= 1\\
+T(n) &= 3T(\ceil{\frac{2n}{3}})
+\end{align*}
+
     \item 
     Solve the recurrence, and prove that your solution is correct. 
     %Solution goes here%
+    SOLVE SOLVE SOLVE
 
     \item
     Prove that the number of swaps executed by StoogeSort is at most $n \choose 2$
     %Solution goes here%
+We know that the number of swaps executed by stoogesort is going to be strictly less than the number of comparisons (since each swap must be preceded by a comparison). However, due to the way stoogesort performs its intermediate sorts, we can make some assertions about the state of each array at each point in the algorithm, and hopefully achieve a lower upper bound on the number of swaps.
+
+(STILL NEED TO DO THIS)
 
     \end{enumerate}
 
@@ -67,19 +107,21 @@ Given three strings $A[1..m], B[1..n]$, and $C[1..m + n]$, describe an algorithm
 whether C is a shuffle of X and Y. Prove your algorithm is correct and analyze its running time.
 %Solution goes here%
 
-\[ isShuffle(C, X, Y) 
+$$
+ isShuffle(C, X, Y) 
     \begin{cases}
     
     True & \text{if } RecursiveHelper(C,X,Y) = length(C) \\
     False, & \text{otherwise}
     \end{cases}
-\]
+$$
+
 
 Consider the following recurrence relation:
 
 
-$\left RecursiveHelper(C, X, Y)$:\\
-\[
+$RecursiveHelper(C, X, Y)$:\\
+$$
     max  
     \begin{cases}
         RecursiveHelper(C[1:], X[1:], Y) + 1   & \text{if } C[0] = X[0])\\
@@ -88,7 +130,7 @@ $\left RecursiveHelper(C, X, Y)$:\\
         1  & \text{if } C(i) = Y(i) \text{ and } length(X) = 0\\
         0, & \text{otherwise}
     \end{cases}
-\]
+$$
 The base case is defined as if C only contains one element and there is a match, return 1. If there is no match, return 0. This allows isShuffle to evaluate the length at the end of the recurrence as a measure of if C is a shuffle of X and Y.
 The recurrence is looking for a match from either the first position in X or Y to C, if there is a match, it removes the beginning of C and the corresponding character in X or Y and recurses. \\
 

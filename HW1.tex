@@ -148,12 +148,15 @@ The number of inversions in the array would then be equal to the number of inver
 Pseudo-code for the algorithm has been omitted for brevity, but `inversion-merge' is similar to the standard `merge' algorithm, except it keeps a running count of the number of inversions which is initialized to zero. 
 Additionally, when `inversion-merge' finds an element in the first array at index $i$ that is greater than an element in the second array at index $j$ (i.e. $A[i] > B[j]$), it adds $m-i$ to the number of inversions, where $m$ is the length of the first array.
 
+
+
 \item 
 A shuffle of two strings X and Y is formed by interspersing the characters into a new string,
 keeping the characters of X and Y in the same order. For example, the string BANANAANANAS
 is a shuffle of the strings BANANA and ANANAS in several different ways.
 Similarly, the strings PRODGYRNAMAMMIINCG and DYPRONGARMAMMICING are both
-shuffles of DYNAMIC and PROGRAMMING:
+shuffles of DYNAMIC and PROGRAMMING.
+
 Given three strings $A[1..m], B[1..n]$, and $C[1..m + n]$, describe an algorithm to determine
 whether C is a shuffle of X and Y. Prove your algorithm is correct and analyze its running time.
 %Solution goes here%

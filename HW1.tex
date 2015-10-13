@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{mathtools}
+\usepackage{color}
 
 \setlength{\topmargin}{0.1in}
 \setlength{\oddsidemargin}{0in}
@@ -13,6 +14,8 @@
 
 \newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
 \newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+
+\newcommand{\question}[1]{\bgroup\color{blue}#1\egroup}
 
 \title{CS515 HW1}
 \author{Steve Hill, Erich Merrill, Kenneth Shultz}
@@ -26,7 +29,7 @@
 \item 
     \begin{enumerate}
     \item 
-    Prove that the following algorithm actually sorts its input.
+      \question{Prove that the following algorithm actually sorts its input.}
     %Solution goes here%
 
   \begin{itemize}
@@ -43,6 +46,7 @@
   \item Inductive step, $n>2$
 
   For any list of size $n > 2$, stoogesort first sorts the first $m=\ceil{\frac{2n}{3}}$ elements of the list (via the inductive hypothesis), then sorts the last $m$ elements of the list, and finally sorts the first $m$ elements of the list again.
+  
   For stoogesort to be able to correctly sort any list, the overlap between the first `sub-region' to be sorted and the second one must be at least as large as the size of the portion of the array not included each intermediate sorting step.
   Otherwise, it would be possible for elements that start on the opposite side of the list from where they belong to get `stuck' in the wrong two-thirds of the list, unable to propigate through to its correct final location.
 
@@ -61,25 +65,25 @@
     \frac{3n}{3} \geq n\\
   \end{align*}
 
-  Which is obviously correct. However, we're unsure how to reason about floor/ceilings in such a way to prove this rigerously.
+  Which is obviously correct. However, we're unsure how to reason about floor/ceilings in such a way to prove this rigorously.
 
   \end{itemize}
 
     \item
-    Would StoogeSort still sort correctly if we replaced $m = \ceil{2n/3}$ with $m = \floor{2n/3}$? Justify
-your answer.
+      \question{Would StoogeSort still sort correctly if we replaced $m = \ceil{2n/3}$ with $m = \floor{2n/3}$? Justify
+      your answer.}
     %Solution goes here%
 
 No. Consider a list of length 4. In this case, $m$ would be set to $m = \floor{\frac{2 \times 4}{3}} = 2$. 
 The first sorting step of stoogesort will sort elements $0$ through $1$, and the second step will sort elements $2$ through $3$.
-Since the two sorting steps clearly don't overlap, it would be impossible for any element at the beginning of the list to propigate up to the end of the list when following the steps in stoogesort.
+Since the two sorting steps clearly don't overlap, it would be impossible for any element at the beginning of the list to propigate up to the end of the list.
 
 Therefore, stoogesort would be unable to correctly sort lists if the ceiling was replaced by a floor.
 
  
     \item
-    State a recurrence (including the base case(s)) for the number of comparisons executed by
-StoogeSort.
+      \question{State a recurrence (including the base case(s)) for the number of comparisons executed by
+      StoogeSort.}
 
 Stoogesort only compares two list elements when the size of the list it's given to sort is 2. Otherwise, it calls stoogesort three times on lists of size $\ceil{\frac{2n}{3}}$. Therefore, we can state the recurrence relation of the number of list element comparisons as:
 
@@ -90,17 +94,17 @@ T(n) &= 3T(\ceil{\frac{2n}{3}})
 \end{align*}
 
     \item 
-    Solve the recurrence, and prove that your solution is correct. 
-    %Solution goes here%
+      \question{Solve the recurrence, and prove that your solution is correct. }
+
     Any $T(n)$ can be expanded to: (if we ignore the ceiling)
     \begin{align*}
-      T(n) &= 3^k T(\left(\frac{2}{3}\right)^k n)\\
+      T(n) &= 3^k T\left(\left(\frac{2}{3}\right)^k n\right)\\
     \end{align*}
 
     If we set $k$ to some value such that $\left(\frac{2}{3}\right)^k n = 2$, then the expanded representation becomes:
 
     \begin{align*}
-      T(n) &= 3^k T(\left(\frac{2}{3}\right)^k n)\\
+      T(n) &= 3^k T\left(\left(\frac{2}{3}\right)^k n\right)\\
       &= 3^k T(2)\\
       T(n) &= 3^k\\
     \end{align*}
@@ -123,8 +127,8 @@ T(n) &= 3T(\ceil{\frac{2n}{3}})
     \end{align*}
 
     \item
-    Prove that the number of swaps executed by StoogeSort is at most $n \choose 2$
-    %Solution goes here%
+      \question{Prove that the number of swaps executed by StoogeSort is at most $n \choose 2$}
+
 We know that the number of swaps executed by stoogesort is going to be strictly less than the number of comparisons (since each swap must be preceded by a comparison). However, due to the way stoogesort performs its intermediate sorts, we can make some assertions about the state of each array at each point in the algorithm, and hopefully achieve a lower upper bound on the number of swaps.
 
 (STILL NEED TO DO THIS)
@@ -132,11 +136,12 @@ We know that the number of swaps executed by stoogesort is going to be strictly 
     \end{enumerate}
 
 \item 
-An inversion in an array A[1..n] is a pair of indices $(i, j)$ such that $i < j$ and
+  \question{An inversion in an array A[1..n] is a pair of indices $(i, j)$ such that $i < j$ and
 $A[i] > A[j]$. The number of inversions in an n-element array is between 0 (if the array is sorted)
 and $n \choose 2$ (if the array is sorted backward). Describe an algorithm to count the number of inversions
 in an n-element array in $O(n log n)$ time. Prove your algorithm is correct and analyze its running
 time
+}
 
 %Solution goes here%
 
@@ -153,11 +158,13 @@ Since both sub-arrays are sorted as a precondition to calling `inversion-merge',
 In all the other `merge' cases, there are demonstrably no inversions. If either array has been exhausted, then the elements are being inserted in-place into the final array and therefore must not be inversions. In the case that $A[i] < B[j]$ there are also no inversions, since every $A$ comes before any element in $B$, and the first element is smaller.
 
 \item 
+  \question{
 A shuffle of two strings X and Y is formed by interspersing the characters into a new string,
 keeping the characters of X and Y in the same order. For example, the string BANANAANANAS
 is a shuffle of the strings BANANA and ANANAS in several different ways.
 Similarly, the strings PRODGYRNAMAMMIINCG and DYPRONGARMAMMICING are both
 shuffles of DYNAMIC and PROGRAMMING.
+}
 
 Given three strings $A[1..m], B[1..n]$, and $C[1..m + n]$, describe an algorithm to determine
 whether C is a shuffle of X and Y. Prove your algorithm is correct and analyze its running time.
@@ -192,8 +199,8 @@ The recurrence is looking for a match from either the first position in X or Y t
 
 Proof of correctness:\\
 \\
-$Theorem:$ The above recurrence relation solves the shuffled string problem. \\
-$Proof:$ \\
+\emph{Theorem:} The above recurrence relation solves the shuffled string problem. \\
+\emph{Proof:} \\
 Let C be length 1, X be length 0, and Y be length 0. RecursiveHelper would return 0 by the last case and is Shuffle would return false. \\
 Let C be Length 1, X be length 1, and Y be length 0. If X is the same character as C, it will return 1, which is the length of the string, thus isShuffle returns true and the algorithm is correct. Similariy, if they are not equal, then the algorithm will reach the last case and return false\\
 Let k be the length of C. Let i,j be the length of X, Y respectively. \\
@@ -222,10 +229,12 @@ This will populate every cell with the computations required the isShuffled recu
 
 
 \item 
+  \question{
 You are driving a bus along a highway, full of rowdy, hyper, thirsty students
 and a soda fountain machine. Each minute that a student is on your bus, that student drinks one
 ounce of soda. Your goal is to drop the students off quickly, so that the total amount of soda
 consumed by all students is as small as possible.
+}
 
 You know how many students will get off of the bus at each exit. Your bus begins somewhere
 along the highway (probably not at either end) and move s at a constant speed of 3.14 miles per

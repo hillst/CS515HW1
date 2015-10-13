@@ -129,9 +129,10 @@ T(n) &= 3T(\ceil{\frac{2n}{3}})
     \item
       \question{Prove that the number of swaps executed by StoogeSort is at most $n \choose 2$}
 
-We know that the number of swaps executed by stoogesort is going to be strictly less than the number of comparisons (since each swap must be preceded by a comparison). However, due to the way stoogesort performs its intermediate sorts, we can make some assertions about the state of each array at each point in the algorithm, and hopefully achieve a lower upper bound on the number of swaps.
+      The only way that stoogesort moves elements through the array during sorting is by swapping any given element with its neighbor, when appropriate.
 
-(STILL NEED TO DO THIS)
+      Consider an array that is sorted in reverse (i.e. the largest element is at index 0, the second largest element is at index 1, etc). Since we know that stoogesort can correctly sort the array, the largest element must 
+
 
     \end{enumerate}
 

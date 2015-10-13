@@ -198,7 +198,7 @@ For k = 2, it is easy to see that both X and Y must be one character and contain
 \\
 QED\\
 
-$Dynamic Programming:$\\
+$Dynamic$ $Programming:$\\
 \\
 isShuffleDP(C, X, Y)\\
 
@@ -213,30 +213,55 @@ In each cell, enter the following: \\
         0, & \text{otherwise}
     \end{cases}
     \]
-This will populate every cell with the computations required the isShuffled recurrence relation in $O(mn)$ time using $O(mn)$ space. Either isShuffled may be run using the table as supplementary table, or you may use the cell at position n,m. If it is equal to the length of C, then the string is shuffled, otherwise C is not a shuffle of X and Y.
+This will populate every cell with the computations required the isShuffled recurrence relation in $O(|C|^2)$ time using $O(|C|^2)$ space. Either isShuffled may be run using the table as supplementary table, or you may use the cell at position n,m. If it is equal to the length of C, then the string is shuffled, otherwise C is not a shuffle of X and Y.
 
 
 \item 
-You are driving a bus along a highway, full of rowdy, hyper, thirsty students
-and a soda fountain machine. Each minute that a student is on your bus, that student drinks one
-ounce of soda. Your goal is to drop the students off quickly, so that the total amount of soda
-consumed by all students is as small as possible.
+You are driving a bus along a highway, full of rowdy, hyper, thirsty students and a soda fountain machine. Each minute that a student is on your bus, that student drinks one ounce of soda. Your goal is to drop the students off quickly, so that the total amount of soda consumed by all students is as small as possible.\\
 
-You know how many students will get off of the bus at each exit. Your bus begins somewhere
-along the highway (probably not at either end) and move s at a constant speed of 3.14 miles per
-hour. You must drive the bus along the highway; however, you may drive forward to one exit then
-backward to an exit in the opposite direction, switching as often as you like. (You can stop the
-bus, drop off students, and turn around instantaneously.)
+You know how many students will get off of the bus at each exit. Your bus begins somewhere along the highway (probably not at either end) and move s at a constant speed of 3.14 miles per hour. You must drive the bus along the highway; however, you may drive forward to one exit then backward to an exit in the opposite direction, switching as often as you like. (You can stop the bus, drop off students, and turn around instantaneously.)\\
 
-Describe an efficient algorithm to drop the students off so that they drink as little soda as
-possible. Your input consists of the bus route (a list of the exits, together with the travel time
-between successive exits), the number of students you will drop off at each exit, and the current
-location of your bus (which you may assume is an exit). Prove your algorithm is correct and analyze
-its running time.
+Describe an efficient algorithm to drop the students off so that they drink as little soda as possible. Your input consists of the bus route (a list of the exits, together with the travel time between successive exits), the number of students you will drop off at each exit, and the current location of your bus (which you may assume is an exit). Prove your algorithm is correct and analyze its running time.\\
+\\
+Consider the following recurrence relation:\\
 
-%Solution goes here%
+def SodaBus(Exits, position, Children, RemainingLimit=$|Exits| \choose 2$):
+    \[
+        \begin{cases}
+            0 & \text{if } |C| = 0\\
+            min
+            \begin{cases}
+            |C| * d(P, P+1) + SodaBus(E, p+1, C', RemainingLimit - 1) \\
+            |C| * d(P, P-1) + SodaBus(E, p-1, C'', RemainingLimit - 1)\\
+            \end{cases} & \text{otherwise}
+        \end{cases}
+    \]
+\\
+The above algorithm simply returns 0 if the bus is empty, or returns the cheapest route considering the sub-problems. The next "move" you take is the argmin of the sub-problem, however we are still returning the distance in order to properly move through the recursion. The last important thing to note is RemainingLimit -- This sets a maximum number of steps the algorithm can take before returning of $n \choose 2$.\\
+
+$Theorem:$ The above recurrence relation solves the SodaBus problem. \\
+The first thing to note is the RemainingLimit parameter. This parameter is equal at the highest level or recursion to $n \choose 2$. This is the longest path a bus may take before reaching every stop at least once. Since students are dropped off upon reaching a stop, this is another way of representing our solution space. There is no purpose to explore solutions outside of this space (it also may cause infinite looping). $n \choose 2$ is chosen because the longest path appears when the bus starts at a central stop. Following the route: 
+\[p+1, p-2, p+3, p-4 ... p+n\]
+This continues until the bus has reached every node once and is equivalent to $n \choose 2$. \\
+
+We will consider the recurrence relation itself.\\
+In the simplest case, that the bus has no children, it is easy to see that it returns 0 and we are done.\\
+Suppose there are 2 stops, and there are students who need to be dropped off at your current position. Both sub-problems will return 0 + the cost of doing nothing, which is also 0. It is easy to see this is correct.\\
+Assume the students belong to the next stop. The sub-problem which moves to this exit, suppose P+1, will evaluate to just the cost of driving there, as it will resolve the base-case. The alternative will continue to accumulate cost until returning to the current position and evaluating the P+1 case anyway.\\
+It follows that for any problem greater than these above three will ultimately resolve to the above three cases, and thus, solved.\\
+
+$Dynamic$ $Programming:$\\
+
+For the dynammic programming implementation of the above algorithm, which runs in $O(2^{n \choose 2})$  time, consider the use of a tree structure, where the root is the starting position, $s$. The children of $s$ and all grandchildren, the left corresponds to positions $p-1$, and the right, $p+1$. Each node contains the cost to travel to it's children. In addition, we also will store a memoization hash table which contains two pieces of information, p, and a boolean array of which exits have been visited.\\
+To fill the table, proceed in depth-first manner. If any node (p, exit-array), is in our table, skip it and immediately return to the parent of that node. This allows us to save our work and keep from doubling back at any given time.\\
+After the tree is filled, starting from $s$, follow the child node with the smallest cost until you reach a terminal node.\\
+
+You can see this is equivalent to the recurrence relation by noting that each branch represents the two sub-problems in the recurrence relation. By saving each p, exit-array pair we can save a significant amount of time when building the tree.
+
+We do not have a solution for the runtime of the algorithm, however, when examining the runtime on different size solution, it seemed to be of the order $O(|E|^2)$. 
 
 \end{enumerate}
 
 \end{document}
+
 

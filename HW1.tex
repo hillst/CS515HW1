@@ -2,6 +2,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{mathtools}
+\usepackage{color}
 
 \setlength{\topmargin}{0.1in}
 \setlength{\oddsidemargin}{0in}
@@ -13,6 +14,8 @@
 
 \newcommand{\ceil}[1]{\left\lceil#1\right\rceil}
 \newcommand{\floor}[1]{\left\lfloor#1\right\rfloor}
+
+\newcommand{\question}[1]{\bgroup\color{blue}#1\egroup}
 
 \title{CS515 HW1}
 \author{Steve Hill, Erich Merrill, Kenneth Shultz}
@@ -26,7 +29,7 @@
 \item 
     \begin{enumerate}
     \item 
-    Prove that the following algorithm actually sorts its input.
+      \question{Prove that the following algorithm actually sorts its input.}
     %Solution goes here%
 
   \begin{itemize}
@@ -43,6 +46,7 @@
   \item Inductive step, $n>2$
 
   For any list of size $n > 2$, stoogesort first sorts the first $m=\ceil{\frac{2n}{3}}$ elements of the list (via the inductive hypothesis), then sorts the last $m$ elements of the list, and finally sorts the first $m$ elements of the list again.
+  
   For stoogesort to be able to correctly sort any list, the overlap between the first `sub-region' to be sorted and the second one must be at least as large as the size of the portion of the array not included each intermediate sorting step.
   Otherwise, it would be possible for elements that start on the opposite side of the list from where they belong to get `stuck' in the wrong two-thirds of the list, unable to propigate through to its correct final location.
 
@@ -61,25 +65,25 @@
     \frac{3n}{3} \geq n\\
   \end{align*}
 
-  Which is obviously correct. However, we're unsure how to reason about floor/ceilings in such a way to prove this rigerously.
+  Which is obviously correct. However, we're unsure how to reason about floor/ceilings in such a way to prove this rigorously.
 
   \end{itemize}
 
     \item
-    Would StoogeSort still sort correctly if we replaced $m = \ceil{2n/3}$ with $m = \floor{2n/3}$? Justify
-your answer.
+      \question{Would StoogeSort still sort correctly if we replaced $m = \ceil{2n/3}$ with $m = \floor{2n/3}$? Justify
+      your answer.}
     %Solution goes here%
 
 No. Consider a list of length 4. In this case, $m$ would be set to $m = \floor{\frac{2 \times 4}{3}} = 2$. 
 The first sorting step of stoogesort will sort elements $0$ through $1$, and the second step will sort elements $2$ through $3$.
-Since the two sorting steps clearly don't overlap, it would be impossible for any element at the beginning of the list to propigate up to the end of the list when following the steps in stoogesort.
+Since the two sorting steps clearly don't overlap, it would be impossible for any element at the beginning of the list to propigate up to the end of the list.
 
 Therefore, stoogesort would be unable to correctly sort lists if the ceiling was replaced by a floor.
 
  
     \item
-    State a recurrence (including the base case(s)) for the number of comparisons executed by
-StoogeSort.
+      \question{State a recurrence (including the base case(s)) for the number of comparisons executed by
+      StoogeSort.}
 
 Stoogesort only compares two list elements when the size of the list it's given to sort is 2. Otherwise, it calls stoogesort three times on lists of size $\ceil{\frac{2n}{3}}$. Therefore, we can state the recurrence relation of the number of list element comparisons as:
 
@@ -90,17 +94,17 @@ T(n) &= 3T(\ceil{\frac{2n}{3}})
 \end{align*}
 
     \item 
-    Solve the recurrence, and prove that your solution is correct. 
-    %Solution goes here%
+      \question{Solve the recurrence, and prove that your solution is correct. }
+
     Any $T(n)$ can be expanded to: (if we ignore the ceiling)
     \begin{align*}
-      T(n) &= 3^k T(\left(\frac{2}{3}\right)^k n)\\
+      T(n) &= 3^k T\left(\left(\frac{2}{3}\right)^k n\right)\\
     \end{align*}
 
     If we set $k$ to some value such that $\left(\frac{2}{3}\right)^k n = 2$, then the expanded representation becomes:
 
     \begin{align*}
-      T(n) &= 3^k T(\left(\frac{2}{3}\right)^k n)\\
+      T(n) &= 3^k T\left(\left(\frac{2}{3}\right)^k n\right)\\
       &= 3^k T(2)\\
       T(n) &= 3^k\\
     \end{align*}
@@ -123,20 +127,22 @@ T(n) &= 3T(\ceil{\frac{2n}{3}})
     \end{align*}
 
     \item
-    Prove that the number of swaps executed by StoogeSort is at most $n \choose 2$
-    %Solution goes here%
-We know that the number of swaps executed by stoogesort is going to be strictly less than the number of comparisons (since each swap must be preceded by a comparison). However, due to the way stoogesort performs its intermediate sorts, we can make some assertions about the state of each array at each point in the algorithm, and hopefully achieve a lower upper bound on the number of swaps.
+      \question{Prove that the number of swaps executed by StoogeSort is at most $n \choose 2$}
 
-(STILL NEED TO DO THIS)
+      The only way that stoogesort moves elements through the array during sorting is by swapping any given element with its neighbor, when appropriate.
+
+      Consider an array that is sorted in reverse (i.e. the largest element is at index 0, the second largest element is at index 1, etc). Since we know that stoogesort can correctly sort the array, the largest element must 
+
 
     \end{enumerate}
 
 \item 
-An inversion in an array A[1..n] is a pair of indices $(i, j)$ such that $i < j$ and
+  \question{An inversion in an array A[1..n] is a pair of indices $(i, j)$ such that $i < j$ and
 $A[i] > A[j]$. The number of inversions in an n-element array is between 0 (if the array is sorted)
 and $n \choose 2$ (if the array is sorted backward). Describe an algorithm to count the number of inversions
 in an n-element array in $O(n log n)$ time. Prove your algorithm is correct and analyze its running
 time
+}
 
 %Solution goes here%
 
@@ -148,21 +154,28 @@ The number of inversions in the array would then be equal to the number of inver
 Pseudo-code for the algorithm has been omitted for brevity, but `inversion-merge' is similar to the standard `merge' algorithm, except it keeps a running count of the number of inversions which is initialized to zero. 
 Additionally, when `inversion-merge' finds an element in the first array at index $i$ that is greater than an element in the second array at index $j$ (i.e. $A[i] > B[j]$), it adds $m-i$ to the number of inversions, where $m$ is the length of the first array.
 
+Since both sub-arrays are sorted as a precondition to calling `inversion-merge', if $B[j] < A[i]$ it follows that $B[j] < A[k]$ for all $i <= k <=m$. Therefore, since we know that $A[i..m] > B[j]$ and that all elements in $B$ come `after' the elements in $A$, there must be $m-i$ inversions.
+
+In all the other `merge' cases, there are demonstrably no inversions. If either array has been exhausted, then the elements are being inserted in-place into the final array and therefore must not be inversions. In the case that $A[i] < B[j]$ there are also no inversions, since every $A$ comes before any element in $B$, and the first element is smaller.
+
 \item 
+  \question{
 A shuffle of two strings X and Y is formed by interspersing the characters into a new string,
 keeping the characters of X and Y in the same order. For example, the string BANANAANANAS
 is a shuffle of the strings BANANA and ANANAS in several different ways.
 Similarly, the strings PRODGYRNAMAMMIINCG and DYPRONGARMAMMICING are both
-shuffles of DYNAMIC and PROGRAMMING:
+shuffles of DYNAMIC and PROGRAMMING.
+}
+
 Given three strings $A[1..m], B[1..n]$, and $C[1..m + n]$, describe an algorithm to determine
 whether C is a shuffle of X and Y. Prove your algorithm is correct and analyze its running time.
 %Solution goes here%
 
 $$
- isShuffle(C, X, Y) 
+\text{isShuffle}(C, X, Y) 
     \begin{cases}
     
-    True & \text{if } RecursiveHelper(C,X,Y) = length(C) \\
+      True & \text{if } \text{RecursiveHelper}(C,X,Y) = \text{length}(C) \\
     False, & \text{otherwise}
     \end{cases}
 $$
@@ -171,15 +184,15 @@ $$
 Consider the following recurrence relation:
 
 
-$RecursiveHelper(C, X, Y)$:\\
+$\text{RecursiveHelper}(C, X, Y)$:\\
 $$
     max  
     \begin{cases}
-        RecursiveHelper(C[1:], X[1:], Y) + 1   & \text{if } C[0] = X[0])\\
-        RecursiveHelper(C[1:], X, Y[1:]) + 1    & \text{if } C[0] = Y[0]\\
-        1  & \text{if } C(i) = X(i) \text{ and } length(Y) = 0\\
-        1  & \text{if } C(i) = Y(i) \text{ and } length(X) = 0\\
-        0, & \text{otherwise}
+      \text{RecursiveHelper}(C[1:], X[1:], Y) + 1   & \text{if } C[0] = X[0])\\
+      \text{RecursiveHelper}(C[1:], X, Y[1:]) + 1    & \text{if } C[0] = Y[0]\\
+      1  & \text{if } C(i) = X(i) \text{ and } \text{length}(Y) = 0\\
+      1  & \text{if } C(i) = Y(i) \text{ and } \text{length}(X) = 0\\
+        0 & \text{otherwise}
     \end{cases}
 $$
 The base case is defined as if C only contains one element and there is a match, return 1. If there is no match, return 0. This allows isShuffle to evaluate the length at the end of the recurrence as a measure of if C is a shuffle of X and Y.
@@ -187,8 +200,8 @@ The recurrence is looking for a match from either the first position in X or Y t
 
 Proof of correctness:\\
 \\
-$Theorem:$ The above recurrence relation solves the shuffled string problem. \\
-$Proof:$ \\
+\emph{Theorem:} The above recurrence relation solves the shuffled string problem. \\
+\emph{Proof:} \\
 Let C be length 1, X be length 0, and Y be length 0. RecursiveHelper would return 0 by the last case and is Shuffle would return false. \\
 Let C be Length 1, X be length 1, and Y be length 0. If X is the same character as C, it will return 1, which is the length of the string, thus isShuffle returns true and the algorithm is correct. Similariy, if they are not equal, then the algorithm will reach the last case and return false\\
 Let k be the length of C. Let i,j be the length of X, Y respectively. \\
@@ -198,9 +211,9 @@ For k = 2, it is easy to see that both X and Y must be one character and contain
 \\
 QED\\
 
-$Dynamic$ $Programming:$\\
+\emph{Dynamic Programming}:\\
 \\
-isShuffleDP(C, X, Y)\\
+$\text{isShuffleDP}(C, X, Y)$\\
 
 Construct a $n+1 x m+1$ table denoted T. At position 0x0, place a 0. \\
 Move through the table from left to right and suppose i and j represent the current indicies\\
@@ -217,7 +230,24 @@ This will populate every cell with the computations required the isShuffled recu
 
 
 \item 
-You are driving a bus along a highway, full of rowdy, hyper, thirsty students and a soda fountain machine. Each minute that a student is on your bus, that student drinks one ounce of soda. Your goal is to drop the students off quickly, so that the total amount of soda consumed by all students is as small as possible.\\
+  \question{
+You are driving a bus along a highway, full of rowdy, hyper, thirsty students
+and a soda fountain machine. Each minute that a student is on your bus, that student drinks one
+ounce of soda. Your goal is to drop the students off quickly, so that the total amount of soda
+consumed by all students is as small as possible.
+
+You know how many students will get off of the bus at each exit. Your bus begins somewhere
+along the highway (probably not at either end) and move s at a constant speed of 3.14 miles per
+hour. You must drive the bus along the highway; however, you may drive forward to one exit then
+backward to an exit in the opposite direction, switching as often as you like. (You can stop the
+bus, drop off students, and turn around instantaneously.)
+
+Describe an efficient algorithm to drop the students off so that they drink as little soda as
+possible. Your input consists of the bus route (a list of the exits, together with the travel time
+between successive exits), the number of students you will drop off at each exit, and the current
+location of your bus (which you may assume is an exit). Prove your algorithm is correct and analyze
+its running time.
+}
 
 You know how many students will get off of the bus at each exit. Your bus begins somewhere along the highway (probably not at either end) and move s at a constant speed of 3.14 miles per hour. You must drive the bus along the highway; however, you may drive forward to one exit then backward to an exit in the opposite direction, switching as often as you like. (You can stop the bus, drop off students, and turn around instantaneously.)\\
 
@@ -250,7 +280,7 @@ Suppose there are 2 stops, and there are students who need to be dropped off at 
 Assume the students belong to the next stop. The sub-problem which moves to this exit, suppose P+1, will evaluate to just the cost of driving there, as it will resolve the base-case. The alternative will continue to accumulate cost until returning to the current position and evaluating the P+1 case anyway.\\
 It follows that for any problem greater than these above three will ultimately resolve to the above three cases, and thus, solved.\\
 
-$Dynamic$ $Programming:$\\
+\emph{Dynamic Programming:}\\
 
 For the dynammic programming implementation of the above algorithm, which runs in $O(2^{n \choose 2})$  time, consider the use of a tree structure, where the root is the starting position, $s$. The children of $s$ and all grandchildren, the left corresponds to positions $p-1$, and the right, $p+1$. Each node contains the cost to travel to it's children. In addition, we also will store a memoization hash table which contains two pieces of information, p, and a boolean array of which exits have been visited.\\
 To fill the table, proceed in depth-first manner. If any node (p, exit-array), is in our table, skip it and immediately return to the parent of that node. This allows us to save our work and keep from doubling back at any given time.\\

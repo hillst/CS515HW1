@@ -164,10 +164,10 @@ whether C is a shuffle of X and Y. Prove your algorithm is correct and analyze i
 %Solution goes here%
 
 $$
- isShuffle(C, X, Y) 
+\text{isShuffle}(C, X, Y) 
     \begin{cases}
     
-    True & \text{if } RecursiveHelper(C,X,Y) = length(C) \\
+      True & \text{if } \text{RecursiveHelper}(C,X,Y) = \text{length}(C) \\
     False, & \text{otherwise}
     \end{cases}
 $$
@@ -176,15 +176,15 @@ $$
 Consider the following recurrence relation:
 
 
-$RecursiveHelper(C, X, Y)$:\\
+$\text{RecursiveHelper}(C, X, Y)$:\\
 $$
     max  
     \begin{cases}
-        RecursiveHelper(C[1:], X[1:], Y) + 1   & \text{if } C[0] = X[0])\\
-        RecursiveHelper(C[1:], X, Y[1:]) + 1    & \text{if } C[0] = Y[0]\\
-        1  & \text{if } C(i) = X(i) \text{ and } length(Y) = 0\\
-        1  & \text{if } C(i) = Y(i) \text{ and } length(X) = 0\\
-        0, & \text{otherwise}
+      \text{RecursiveHelper}(C[1:], X[1:], Y) + 1   & \text{if } C[0] = X[0])\\
+      \text{RecursiveHelper}(C[1:], X, Y[1:]) + 1    & \text{if } C[0] = Y[0]\\
+      1  & \text{if } C(i) = X(i) \text{ and } \text{length}(Y) = 0\\
+      1  & \text{if } C(i) = Y(i) \text{ and } \text{length}(X) = 0\\
+        0 & \text{otherwise}
     \end{cases}
 $$
 The base case is defined as if C only contains one element and there is a match, return 1. If there is no match, return 0. This allows isShuffle to evaluate the length at the end of the recurrence as a measure of if C is a shuffle of X and Y.
@@ -203,9 +203,9 @@ For k = 2, it is easy to see that both X and Y must be one character and contain
 \\
 QED\\
 
-$Dynamic Programming:$\\
+Dynamic Programming:\\
 \\
-isShuffleDP(C, X, Y)\\
+$\text{isShuffleDP}(C, X, Y)$\\
 
 Construct a $n+1 x m+1$ table denoted T. At position 0x0, place a 0. \\
 Move through the table from left to right and suppose i and j represent the current indicies\\

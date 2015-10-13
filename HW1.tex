@@ -131,7 +131,20 @@ T(n) &= 3T(\ceil{\frac{2n}{3}})
 
       The only way that stoogesort moves elements through the array during sorting is by swapping any given element with its neighbor, when appropriate.
 
-      Consider an array that is sorted in reverse (i.e. the largest element is at index 0, the second largest element is at index 1, etc). Since we know that stoogesort can correctly sort the array, the largest element must 
+      Consider an array that is sorted in reverse (i.e. the largest element is at index 1, the second largest element is at index 2, etc). For the maximum element to travel to its correct place at the end of the array, it must first move to index $\ceil{\frac{2n}{3}}$ in the first intermediate sort. 
+      For the second intermediate sort, there are only $\floor{\frac{n}{3}}$ elements between it and the end of the array (which all must be smaller than it, by definition) before it can reach the end of the array.
+      
+      The element's movement first intermediate sort requires $\ceil{\frac{2n}{3}}$ swaps, and the second requires $\floor{\frac{n}{3}}$ swaps for a total of $n$ swaps.
+
+      Since the maximum element is already in its correct position and the second-to-maximum element now occupies the first element in the array, by the same logic it requires $n-1$ swaps to put the second largest element in its place.
+
+      From this, we can derive that the maximum number of swaps $M_s$ is:
+
+      $$
+      M_s = \sum_{x=1}^n{x} = {n \choose 2}
+      $$
+
+      Therefore the maximum number of swaps is $n \choose 2$.
 
 
     \end{enumerate}
@@ -154,7 +167,7 @@ The number of inversions in the array would then be equal to the number of inver
 Pseudo-code for the algorithm has been omitted for brevity, but `inversion-merge' is similar to the standard `merge' algorithm, except it keeps a running count of the number of inversions which is initialized to zero. 
 Additionally, when `inversion-merge' finds an element in the first array at index $i$ that is greater than an element in the second array at index $j$ (i.e. $A[i] > B[j]$), it adds $m-i$ to the number of inversions, where $m$ is the length of the first array.
 
-Since both sub-arrays are sorted as a precondition to calling `inversion-merge', if $B[j] < A[i]$ it follows that $B[j] < A[k]$ for all $i <= k <=m$. Therefore, since we know that $A[i..m] > B[j]$ and that all elements in $B$ come `after' the elements in $A$, there must be $m-i$ inversions.
+Since both sub-arrays are sorted as a precondition to calling `inversion-merge', if $B[j] < A[i]$ it follows that $B[j] < A[k]$ for all $i \leq k \leq m$. Therefore, since we know that $A[i..m] > B[j]$ and that all elements in $B$ come `after' the elements in $A$, there must be $m-i$ inversions.
 
 In all the other `merge' cases, there are demonstrably no inversions. If either array has been exhausted, then the elements are being inserted in-place into the final array and therefore must not be inversions. In the case that $A[i] < B[j]$ there are also no inversions, since every $A$ comes before any element in $B$, and the first element is smaller.
 

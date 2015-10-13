@@ -140,6 +140,14 @@ time
 
 %Solution goes here%
 
+We can modify the mergesort algorithm to an algorithm `inversion-mergesort' which also returns the number of inversions in an array as it sorts the array.
+
+Similar to mergesort, the algorithm would first divide the array into two parts. 
+The number of inversions in the array would then be equal to the number of inversions in the first half of the array (which is calculated by calling `inversion-mergesort' on the sub-array), plus the number of inversions in the second half of the array, plus the number of inversions detected while merging the two (sorted) sub-arrays using an `inversion-merge' function which merges the sub-arrays while counting the number of inversions.
+
+Pseudo-code for the algorithm has been omitted for brevity, but `inversion-merge' is similar to the standard `merge' algorithm, except it keeps a running count of the number of inversions which is initialized to zero. 
+Additionally, when `inversion-merge' finds an element in the first array at index $i$ that is greater than an element in the second array at index $j$ (i.e. $A[i] > B[j]$), it adds $m-i$ to the number of inversions, where $m$ is the length of the first array.
+
 \item 
 A shuffle of two strings X and Y is formed by interspersing the characters into a new string,
 keeping the characters of X and Y in the same order. For example, the string BANANAANANAS
